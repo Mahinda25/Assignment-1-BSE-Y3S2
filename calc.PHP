@@ -6,6 +6,8 @@ $cookie_value2 = "";
 
 if (isset($_POST['num'])) {
     $num = $_POST['input'] . $_POST['num'];
+} elseif (isset($_POST['delete'])) {
+    $num = substr($_POST['input'], 0, -1);
 } else {
     $num = "";
 }
@@ -55,6 +57,12 @@ if (isset($_POST['equal'])) {
                 $result = "Error: Negative number for square root!";
             }
             break;
+        case "cbrt()":
+            $result = pow($_COOKIE['num'], 1/3);
+            break;
+        case "square()":
+            $result = pow($_COOKIE['num'], 2);
+            break;
         case "exp()":
             $result = exp($_COOKIE['num']);
             break;
@@ -62,7 +70,11 @@ if (isset($_POST['equal'])) {
             $result = "Invalid operation selected";
             break;
     }
-    $num = $result;
+    $num = $_COOKIE['num'] . ' ' . $_COOKIE['operation'] . ' ' . $num . ' = ' . $result;
+}
+
+if (isset($_POST['clear'])) {
+    $num = "";
 }
 ?>
 
@@ -88,7 +100,6 @@ if (isset($_POST['equal'])) {
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-            width: 300px;
         }
 
         fieldset {
@@ -98,7 +109,6 @@ if (isset($_POST['equal'])) {
         legend {
             color: #fff;
             font-size: 1.5em;
-            margin-bottom: 20px;
         }
 
         .maininput {
@@ -111,50 +121,38 @@ if (isset($_POST['equal'])) {
             color: #333;
         }
 
-        .numbtn, .calbtn, .equal, .c {
-            width: 22%;
+        .numbtn, .calbtn, .equal, .c, .del {
+            width: 20%;
             padding: 10px;
             font-size: 1.2em;
-            margin: 5px 1%;
+            margin: 5px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            color: #fff;
         }
 
         .numbtn {
             background-color: #eee;
-        }
-
-        .numbtn:hover {
-            background-color: #ccc;
+            color: #333;
         }
 
         .calbtn {
             background-color: #8bc34a;
-            color: white;
-        }
-
-        .calbtn:hover {
-            background-color: #7cb342;
         }
 
         .equal {
             background-color: #f44336;
-            color: white;
         }
 
-        .equal:hover {
-            background-color: #e53935;
-        }
-
-        .c {
+        .c, .del {
             background-color: #9e9e9e;
-            color: white;
         }
 
-        .c:hover {
-            background-color: #757575;
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -163,29 +161,33 @@ if (isset($_POST['equal'])) {
         <form action="" method="post">
             <fieldset>
                 <legend>Multipurpose Calculator</legend>
-
-                <input type="text" class="maininput" name="input" value="<?php echo @$num ?>" readonly>
-                <input type="submit" class="c" name="num" value="C"><br>
-                <input type="submit" class="calbtn" name="operation" value="exp()">
-                <input type="submit" class="calbtn" name="operation" value="%">
-                <input type="submit" class="calbtn" name="operation" value="sqrt()">
-                <input type="submit" class="calbtn" name="operation" value="log()"><br>
-                <input type="submit" class="numbtn" name="num" value="7">
-                <input type="submit" class="numbtn" name="num" value="8">
-                <input type="submit" class="numbtn" name="num" value="9">
-                <input type="submit" class="calbtn" name="operation" value="+"><br>
-                <input type="submit" class="numbtn" name="num" value="4">
-                <input type="submit" class="numbtn" name="num" value="5">
-                <input type="submit" class="numbtn" name="num" value="6">
-                <input type="submit" class="calbtn" name="operation" value="-"><br>
-                <input type="submit" class="numbtn" name="num" value="1">
-                <input type="submit" class="numbtn" name="num" value="2">
-                <input type="submit" class="numbtn" name="num" value="3">
-                <input type="submit" class="calbtn" name="operation" value="*"><br>
-                <input type="submit" class="numbtn" name="num" value=".">
-                <input type="submit" class="numbtn" name="num" value="0">
-                <input type="submit" class="calbtn" name="operation" value="/">
-                <input type="submit" class="equal" name="equal" value="=">
+                <input type="text" class="maininput" name="input" value="<?php echo @$num; ?>" readonly>
+                <div class="buttons">
+                    <input type="submit" class="c" name="clear" value="C">
+                    <input type="submit" class="del" name="delete" value="Del">
+                    <input type="submit" class="calbtn" name="operation" value="exp()">
+                    <input type="submit" class="calbtn" name="operation" value="%">
+                    <input type="submit" class="calbtn" name="operation" value="sqrt()">
+                    <input type="submit" class="calbtn" name="operation" value="cbrt()">
+                    <input type="submit" class="calbtn" name="operation" value="square()">
+                    <input type="submit" class="calbtn" name="operation" value="log()">
+                    <input type="submit" class="numbtn" name="num" value="7">
+                    <input type="submit" class="numbtn" name="num" value="8">
+                    <input type="submit" class="numbtn" name="num" value="9">
+                    <input type="submit" class="calbtn" name="operation" value="+">
+                    <input type="submit" class="numbtn" name="num" value="4">
+                    <input type="submit" class="numbtn" name="num" value="5">
+                    <input type="submit" class="numbtn" name="num" value="6">
+                    <input type="submit" class="calbtn" name="operation" value="-">
+                    <input type="submit" class="numbtn" name="num" value="1">
+                    <input type="submit" class="numbtn" name="num" value="2">
+                    <input type="submit" class="numbtn" name="num" value="3">
+                    <input type="submit" class="calbtn" name="operation" value="*">
+                    <input type="submit" class="numbtn" name="num" value=".">
+                    <input type="submit" class="numbtn" name="num" value="0">
+                    <input type="submit" class="calbtn" name="operation" value="/">
+                    <input type="submit" class="equal" name="equal" value="=">
+                </div>
             </fieldset>
         </form>
     </div>
