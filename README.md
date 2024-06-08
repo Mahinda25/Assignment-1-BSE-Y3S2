@@ -20,7 +20,7 @@ Make sure you have PHP installed on your PC. You can use XAMPP, MAMP, or any oth
 Place the code above in a file called calculator.php in your server's document root (htdocs).
 
 **Access the calculator:**
-Open your browser and go to http://localhost/calculator.php.
+Open your browser and go to http://localhost/Assignment-1-BSE-Y3S2/calc.PHP
 
 **Perform calculations:**
 Enter values using the number buttons.
